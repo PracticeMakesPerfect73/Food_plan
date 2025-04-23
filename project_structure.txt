@@ -1,0 +1,28 @@
+foodplan_project/
+├─ foodplan_project/              # Конфигурация Django-проекта
+│   ├─ __init__.py                # Инициализация Python-пакета
+│   ├─ settings.py                # Основные настройки проекта Django
+│   ├─ urls.py                    # Главный URL-роутинг проекта
+│   ├─ wsgi.py                    # Конфигурация для запуска через WSGI
+│   └─ asgi.py                    # Конфигурация для ASGI
+│
+├─ recipes_app/                   # Приложение для логики магазина
+│   ├─ __init__.py                # Инициализация пакета
+│   ├─ admin.py                   # Настройка Django Admin-интерфейса
+│   ├─ apps.py                    # Конфигурация приложения recipes_app
+│   └─ models.py                  # Все модели: BotUser, Recipe, Ingredient и т.д.
+│
+├─ bot/                           # Telegram-бот
+│   ├─ __init__.py                # Инициализация пакета
+│   ├─ main.py                    # Запуск бота
+│   ├─ handlers.py                # Хендлеры для обработки команд, сообщений, подписок
+│   └─ keyboards.py               # Отдельно вынесенные клавиатуры
+│
+├─ media/                         # Медиафайлы
+│   └─ recipes/                   # Фото блюд
+│       └─ *.jpg                  # Изображения, загружаемые через Django Admin
+│
+├─ manage.py                      # Команда для запуска и администрирования проекта (CLI)
+├─ requirements.txt               # Зависимости
+├─ db.sqlite3                     # База данных
+└─ .env                           # Настройки
