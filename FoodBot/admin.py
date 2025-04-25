@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Recipe
+from .models import Recipe, UserProfile
 
 
 class RecipeAdmin(admin.ModelAdmin):
@@ -14,4 +14,9 @@ class RecipeAdmin(admin.ModelAdmin):
     preview_image.short_description = 'Превью'
 
 
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user_id', 'is_premium',)
+
+
 admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(UserProfile, UserProfileAdmin)
