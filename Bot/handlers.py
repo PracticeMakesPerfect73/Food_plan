@@ -70,6 +70,18 @@ def start_command(update, context):
         "Готов начать?"
     )
     reply_markup = keyboards.start_keyboard()
+
+    logo_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logo_big.png')
+    if os.path.exists(logo_path):
+        try:
+            with open(logo_path, 'rb') as logo_file:
+                context.bot.send_photo(
+                    chat_id=user_id,
+                    photo=logo_file
+                )
+        except Exception as e:
+            print(f"Ошибка при отправке логотипа: {e}")
+
     update.message.reply_text(welcome_text, reply_markup=reply_markup)
 
 
