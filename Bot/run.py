@@ -12,7 +12,7 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
 from handlers import start_command, get_recipe_action, button_callback_handler
 
-load_dotenv()
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
 BOT_TOKEN = os.getenv('TG_TOKEN')
 
