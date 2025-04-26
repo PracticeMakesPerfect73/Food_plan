@@ -1,6 +1,7 @@
 from django.contrib import admin
-from django.utils.html import format_html
+from django import forms
 from .models import Recipe, UserProfile
+from django.utils.html import format_html
 
 
 class RecipeAdmin(admin.ModelAdmin):
@@ -14,7 +15,19 @@ class RecipeAdmin(admin.ModelAdmin):
     preview_image.short_description = 'Превью'
 
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['favorite_recipes'].queryset = self.instance.favorite_recipes.all()
+
+
 class UserProfileAdmin(admin.ModelAdmin):
+    form = UserProfileForm
     list_display = ('user_id', 'is_premium',)
 
 

@@ -9,7 +9,7 @@ django.setup()
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
 from handlers import start_command, get_recipe_action
-from handlers import favorites_command, button_callback_handler
+from handlers import button_callback_handler
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -23,7 +23,6 @@ def main():
 
     dispatcher.add_handler(CommandHandler("start", start_command))
     dispatcher.add_handler(CommandHandler("recipe", get_recipe_action))
-    dispatcher.add_handler(CommandHandler("favorites", favorites_command))
     dispatcher.add_handler(CallbackQueryHandler(button_callback_handler))
 
     print("Bot started polling...")
