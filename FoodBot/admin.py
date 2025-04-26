@@ -1,7 +1,8 @@
-from django.contrib import admin
 from django import forms
-from .models import Recipe, UserProfile
+from django.contrib import admin
 from django.utils.html import format_html
+
+from .models import Recipe, UserProfile
 
 
 class RecipeAdmin(admin.ModelAdmin):

@@ -17,6 +17,11 @@ class UserProfile(models.Model):
         'Recipe',
         blank=True,
         related_name='favorited_by',
-        verbose_name='ID избранных рецептов:',
+        verbose_name='ID избранных рецептов:'
     )
     is_premium = models.BooleanField(verbose_name='Платная подписка:', default=False)
+    daily_recipes_count = models.IntegerField(default=0)
+    last_recipe_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.user_id)

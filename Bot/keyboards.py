@@ -12,8 +12,18 @@ def start_keyboard():
 
 def recipe_keyboard(recipe_id):
     keyboard = [
-        [InlineKeyboardButton("Поставить лайк", callback_data=f"like_{recipe_id}")],
-        [InlineKeyboardButton("Показать еще рецепт", callback_data="get_recipe")],
+        [InlineKeyboardButton("Другой рецепт", callback_data="get_recipe")],
+        [InlineKeyboardButton("❤️", callback_data=f"like_{recipe_id}")],
+        [InlineKeyboardButton("Показать детали", callback_data=f"details_{recipe_id}")],
+        [InlineKeyboardButton("Оформить подписку", callback_data="subscribe_placeholder")],
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
+
+def recipe_details_keyboard(recipe_id):
+    keyboard = [
+        [InlineKeyboardButton("Другой рецепт", callback_data="get_recipe")],
+        [InlineKeyboardButton("❤️", callback_data=f"like_{recipe_id}")],
         [InlineKeyboardButton("Оформить подписку", callback_data="subscribe_placeholder")]
     ]
     return InlineKeyboardMarkup(keyboard)
