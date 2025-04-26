@@ -1,0 +1,27 @@
+FoodPlanBot/
+├── Bot/
+│   ├── __init__.py
+│   ├── .env               # Настройки бота
+│   ├── handlers.py        # Логика обработки кнопок
+│   ├── keyboards.py       # Клавиатуры для бота
+│   ├── run.py             # Точка входа для бота
+├── FoodBot/
+│   ├── __init__.py
+│   ├── admin.py           # Админ-панель Django
+│   ├── asgi.py
+│   ├── models.py          # Модели Django
+│   ├── settings.py        # Настройки Django
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── migrations/
+│       ├── __init__.py
+│       └── ... миграции базы данных ...
+├── media/
+│   └── recipes/           # Изображения рецептов
+├── db.sqlite3             # БД Django
+├── logo_big.png           # Логотип
+├── scheme.png             # Схема работы бота
+├── Dockerfile             # Инструкция Docker
+├── docker-compose.yml     # Docker-оркестрация
+├── requirements.txt       # Python-зависимости
+└── manage.py              # Django-утилита
