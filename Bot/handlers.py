@@ -52,20 +52,22 @@ def get_liked_recipe_ids(user_id):
 
 
 def get_random_recipe():
-    recipes = Recipe.objects.all()
-    if not recipes.exists():
+    count = Recipe.objects.aggregate(c=Count('pk'))['c']
+    if not count:
         return None
-    return random.choice(recipes)
+    offset = random.randrange(count)
+    return Recipe.objects.all()[offset]
 
 
 def get_random_favorite_recipe(user_id):
-    liked_ids = get_liked_recipe_ids(user_id)
-    if not liked_ids:
+    qs = UserProfile.objects.filter(user_id=user_id)\
+           .values_list('favorite_recipes', flat=True)
+    ids = list(qs)
+    if not ids:
         return None
-    recipes = Recipe.objects.filter(id__in=liked_ids)
-    if not recipes.exists():
-        return None
-    return random.choice(recipes)
+    count = len(ids)
+    offset = random.randrange(count)
+    return Recipe.objects.get(id=ids[offset])
 
 
 def start_command(update, context):
