@@ -97,21 +97,8 @@ def start_command(update, context):
     update.message.reply_text(welcome_text, reply_markup=reply_markup)
 
 
-def send_recipe(update, context, recipe):
-    user_id = update.effective_user.id
-
-    if not recipe:
-        context.bot.send_message(chat_id=user_id, text="Нет доступных рецептов.")
-        return
-
+def send_recipe_message(context, user_id, recipe, reply_markup):
     caption = f"*{recipe.title}*"
-    keyboard = [
-        [InlineKeyboardButton("Другой рецепт", callback_data="get_recipe")],
-        [InlineKeyboardButton("❤️", callback_data=f"like_{recipe.id}")],
-        [InlineKeyboardButton("Показать детали", callback_data=f"show_details_{recipe.id}")],
-        [InlineKeyboardButton("Оформить подписку", callback_data="subscribe_placeholder")]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
 
     if recipe.image and recipe.image.path:
         try:
@@ -123,16 +110,32 @@ def send_recipe(update, context, recipe):
                     parse_mode='Markdown',
                     reply_markup=reply_markup
                 )
-            return
         except Exception as e:
-            print(f"Ошибка при отправке фото: {e}")
+            print(f"Ошибка при отправке изображения: {e}")
+            context.bot.send_message(
+                chat_id=user_id,
+                text=caption,
+                parse_mode='Markdown',
+                reply_markup=reply_markup
+            )
+    else:
+        context.bot.send_message(
+            chat_id=user_id,
+            text=caption,
+            parse_mode='Markdown',
+            reply_markup=reply_markup
+        )
 
-    context.bot.send_message(
-        chat_id=user_id,
-        text=caption,
-        parse_mode='Markdown',
-        reply_markup=reply_markup
-    )
+
+def send_recipe(update, context, recipe):
+    user_id = update.effective_user.id
+
+    if not recipe:
+        context.bot.send_message(chat_id=user_id, text="Нет доступных рецептов.")
+        return
+
+    reply_markup = keyboards.recipe_keyboard(recipe.id)
+    send_recipe_message(context, user_id, recipe, reply_markup)
 
 
 def get_recipe_action(update, context, from_favorites=False):
@@ -150,52 +153,20 @@ def get_recipe_action(update, context, from_favorites=False):
         )
         return
 
-    if from_favorites:
-        recipe = get_random_favorite_recipe(user_id)
-    else:
-        recipe = get_random_recipe()
+    recipe = get_random_favorite_recipe(user_id) if from_favorites else get_random_recipe()
 
     if not recipe:
-        if from_favorites:
-            context.bot.send_message(chat_id=user_id, text="У вас нет избранных рецептов.")
-        else:
-            context.bot.send_message(chat_id=user_id, text="Нет доступных рецептов.")
+        context.bot.send_message(
+            chat_id=user_id,
+            text="У вас нет избранных рецептов." if from_favorites else "Нет доступных рецептов."
+        )
         return
 
     user.daily_recipes_count += 1
     user.save()
 
-    name = recipe.title
-    photo = recipe.image
-
-    caption = f"*{name}*"
     reply_markup = keyboards.recipe_keyboard(recipe.id)
-
-    if photo and photo.path:
-        try:
-            with open(photo.path, 'rb') as image_file:
-                context.bot.send_photo(
-                    chat_id=user_id,
-                    photo=image_file,
-                    caption=caption,
-                    parse_mode='Markdown',
-                    reply_markup=reply_markup
-                )
-        except Exception as e:
-            print(f"Ошибка при отправке фото: {e}")
-            context.bot.send_message(
-                chat_id=user_id,
-                text=caption,
-                parse_mode='Markdown',
-                reply_markup=reply_markup
-            )
-    else:
-        context.bot.send_message(
-            chat_id=user_id,
-            text=caption,
-            parse_mode='Markdown',
-            reply_markup=reply_markup
-        )
+    send_recipe_message(context, user_id, recipe, reply_markup)
 
 
 def show_recipe_details(update, context, recipe_id):
