@@ -5,12 +5,10 @@ import random
 import sys
 
 from django.db.models import Count
-from dotenv import load_dotenv
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
 from FoodBot.models import Recipe, UserProfile
 
-load_dotenv()
 DAILY_FREE_LIMIT = int(os.getenv('DAILY_FREE_LIMIT', 3))
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))

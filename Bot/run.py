@@ -4,6 +4,7 @@ import sys
 from dotenv import load_dotenv
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FoodBot.settings')
 import django
 django.setup()
@@ -11,8 +12,6 @@ django.setup()
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
 from handlers import start_command, get_recipe_action, button_callback_handler
-
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
 BOT_TOKEN = os.getenv('TG_TOKEN')
 
