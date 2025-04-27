@@ -70,6 +70,18 @@ def get_random_favorite_recipe(user_id):
     return Recipe.objects.get(id=ids[offset])
 
 
+def get_recipe_word(count):
+    count = abs(count) % 100
+    if 11 <= count <= 19:
+        return "рецептов"
+    i = count % 10
+    if i == 1:
+        return "рецепт"
+    if 2 <= i <= 4:
+        return "рецепта"
+    return "рецептов"
+
+
 def start_command(update, context):
     user_id = update.effective_user.id
     add_or_update_user(user_id)
@@ -77,7 +89,7 @@ def start_command(update, context):
     welcome_text = (
         "Привет! Я FoodPlan бот, твой помощник в планировании рациона.\n\n"
         "Я помогу тебе выбрать, что приготовить, составлю список покупок и помогу сэкономить время и деньги!\n\n"
-        f"В бесплатной версии тебе доступно {DAILY_FREE_LIMIT} рецепта в день. "
+        f"В бесплатной версии тебе доступно {DAILY_FREE_LIMIT} {get_recipe_word(DAILY_FREE_LIMIT)} в день."
         "Оформи подписку для безлимитного доступа и дополнительных функций!\n\n"
         "Готов начать?"
     )
@@ -147,7 +159,7 @@ def get_recipe_action(update, context, from_favorites=False):
         reply_markup = keyboards.subscribe_keyboard()
         context.bot.send_message(
             chat_id=user_id,
-            text=f"Ваш дневной лимит ({DAILY_FREE_LIMIT} рецептов) исчерпан.\n"
+            text=f"Ваш дневной лимит ({DAILY_FREE_LIMIT} {get_recipe_word(DAILY_FREE_LIMIT)}) исчерпан."
                  f"Оформите подписку для безлимитного доступа!",
             reply_markup=reply_markup
         )
