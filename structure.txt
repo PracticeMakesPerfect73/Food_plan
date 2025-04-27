@@ -1,4 +1,4 @@
-FoodPlanBot/
+DailyDishesBot/
 ├── Bot/
 │   ├── __init__.py
 │   ├── .env               # Настройки бота
